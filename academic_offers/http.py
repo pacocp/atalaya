@@ -16,7 +16,7 @@ log = logging.getLogger(__name__)
 
 # The published site (set by the GitHub workflow). Until it exists, point site owners at the author's page.
 SITE_URL = os.environ.get("ATALAYA_SITE_URL", "").rstrip("/")
-CONTACT_URL = f"{SITE_URL}/about.html" if SITE_URL else "https://pacocp.es"
+CONTACT_URL = f"{SITE_URL}/about.html" if SITE_URL else "https://github.com/Diogo-JSDias/atalaya"
 USER_AGENT = f"AtalayaBot/0.2 (+{CONTACT_URL}; once a day, non-commercial)"
 BOT_NAME = "AtalayaBot"
 DEFAULT_DELAY = 2.0
@@ -25,9 +25,9 @@ CACHE_DIR = Path(".cache/http")
 CACHE_TTL = 6 * 3600  # seconds
 
 _last_hit: dict[str, float] = {}
-_robots: dict[str, RobotFileParser | None] = {}
+_robots: dict[str, RobotFileParser] = {}
 _client = httpx.Client(
-    headers={"User-Agent": USER_AGENT, "Accept-Language": "es,en;q=0.8"},
+    headers={"User-Agent": USER_AGENT, "Accept-Language": "pt-PT,pt;q=0.9,en;q=0.8"},
     follow_redirects=True,
     timeout=45,
 )
@@ -37,18 +37,45 @@ class Disallowed(Exception):
     """robots.txt forbids this URL for our bot."""
 
 
-def _robots_for(scheme: str, host: str) -> RobotFileParser | None:
+def _blocked_robots() -> RobotFileParser:
+    """Return rules that disallow every URL when robots.txt cannot be reached safely."""
+    rp = RobotFileParser()
+    rp.parse(["User-agent: *", "Disallow: /"])
+    return rp
+
+
+def _robots_for(scheme: str, host: str) -> RobotFileParser:
     if host not in _robots:
-        rp = RobotFileParser()
-        _robots[host] = None
-        for _ in range(3):
+        # Fail closed until a successful response or a robots-unavailable (4xx)
+        # response establishes the site's policy.
+        _robots[host] = _blocked_robots()
+        for attempt in range(3):
             try:
                 r = _client.get(f"{scheme}://{host}/robots.txt", timeout=15)
-            except httpx.HTTPError:
+            except httpx.HTTPError as exc:
+                if attempt == 2:
+                    log.warning(
+                        "robots.txt could not be reached for %s after 3 attempts; "
+                        "disallowing the host (%s)",
+                        host, type(exc).__name__,
+                    )
                 continue
-            # No robots.txt (4xx) means everything is allowed.
-            rp.parse(r.text.splitlines() if r.status_code == 200 else [])
-            _robots[host] = rp
+
+            if 200 <= r.status_code < 300:
+                rp = RobotFileParser()
+                rp.parse(r.text.splitlines())
+                _robots[host] = rp
+            elif 400 <= r.status_code < 500 and r.status_code != 429:
+                # A 4xx response means robots.txt is unavailable. A 429 is
+                # treated conservatively as rate limiting, not as permission.
+                rp = RobotFileParser()
+                rp.parse([])
+                _robots[host] = rp
+            else:
+                log.warning(
+                    "robots.txt returned HTTP %s for %s; disallowing the host",
+                    r.status_code, host,
+                )
             break
     return _robots[host]
 
