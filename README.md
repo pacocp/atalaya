@@ -1,19 +1,16 @@
-# Atalaya: plazas académicas en España
+# Atalaia: oportunidades académicas e científicas em Portugal
 
-*Atalaya* (Spanish for "watchtower"): one lookout over academic posts and research funding across Spain: [https://pacocp.es/atalaya/](https://pacocp.es/atalaya/)
-Made by [Paco Carrillo-Pérez](https://pacocp.es) as a non-commercial side project.
+*Atalaia* é um portal de oportunidades académicas e científicas em Portugal, adaptado a partir do projeto aberto [Atalaya](https://github.com/pacocp/atalaya), originalmente criado por [Francisco Carrillo-Pérez](https://pacocp.es).
 
-Every day Atalaya collects open faculty posts, research jobs and funding calls from official bulletins,
-funders, research centres and universities, classifies them by field and career stage, and publishes a
-static, filterable website. Each listing links back to its original notice.
+Todos os dias, a Atalaia recolhe concursos para docentes, vagas de investigação e bolsas a partir de fontes oficiais portuguesas, fundações e universidades, complementados por concursos europeus ERC e MSCA. As oportunidades são classificadas por área e fase de carreira e publicadas num site estático e filtrável. Cada entrada liga ao aviso original.
 
 ## Run locally
 
 ```bash
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python -m academic_offers                 # scrape all sources, update data/, build site/
-.venv/bin/python -m academic_offers --build         # rebuild site/ from the database only
-.venv/bin/python -m academic_offers --only boe,crg  # run some sources only
+.venv/bin/python -m academic_offers --build         # rebuild the site from the database only
+.venv/bin/python -m academic_offers --only dr,fct  # run selected Portuguese sources only
 .venv/bin/python -m unittest discover -s tests      # offline tests
 python3 -m http.server 8766 --directory site        # preview at http://localhost:8766
 ```
@@ -31,24 +28,32 @@ One-time setup on GitHub:
    `ATALAYA_LLM_MODEL` (default `claude-haiku-5-5`).
 4. **Actions → Daily update → Run workflow** for the first deploy.
 
-GitHub Pages on a free account needs a public repository.
+O GitHub Pages num plano gratuito exige um repositório público.
 
-## Sources
+## Fontes portuguesas
 
-| Key | Source | Notes |
+| Chave | Fonte | Cobertura |
 |---|---|---|
-| `boe` | BOE open-data API, section II.B | University faculty posts and CSIC research posts. One entry per *área de conocimiento*; deadline estimated from "N días hábiles/naturales" with national + regional holidays. Notices whose posts can't be parsed go to the AI step, or stay as one "see notice" entry. |
-| `eu-ft` | EU Funding & Tenders API | MSCA and ERC calls |
-| `aei` | Agencia Estatal de Investigación | Open national calls (RYC, JdC, FPU…), deadline from the call page |
-| `ikerbasque`, `icrea` | Regional funders | Closed calls dropped; ICREA shown as "upcoming" between calls |
-| `csic` | CSIC Sede electrónica, "Convocatorias de personal" | Research calls still accepting applications (predoc, postdoc, research staff, technicians); deadline worked out from "N días hábiles a partir del…". Internal civil-service postings are skipped. The "Bolsa de trabajo" app needs a login, so it isn't used. |
-| `cnic`, `icfo`, `crg`, `cnio`, `irb` | Research centres' job boards | Deadlines read from each job page |
-| `uni:*` | University pages (UCM, UGR, UC3M) | Contracted faculty: Ayudante Doctor, Permanente Laboral, Asociado. Add more in `sources/universities.py` → `PAGES` |
+| `dr` | Diário da República, 2.ª Série (RSS) | Avisos de recrutamento, docência e investigação; filtro inicial por título. |
+| `fct` | Fundação para a Ciência e a Tecnologia | Concursos abertos, com enriquecimento das páginas oficiais de detalhe. |
+| `ulisboa` | Universidade de Lisboa | Recrutamento académico e científico; inclui categoria, vagas, prazo e documento principal. |
+| `uporto` | Universidade do Porto | Arquivo de oportunidades abertas; bolsas de investigação e recrutamento académico. |
+| `ualg` | Universidade do Algarve | Procedimentos concursais de docentes e investigadores, com datas e documentos oficiais. |
+| `uc-apply` | Universidade de Coimbra | UC Apply; bolsas de investigação, docentes e investigadores com candidaturas abertas. |
+| `uminho-eeg` | Universidade do Minho – EEG | Apenas concursos abertos para pessoal docente/investigador da Escola de Economia, Gestão e Ciência Política; não representa a cobertura central de toda a UMinho. |
+| `novafct-investigadores` | NOVA FCT | Concursos para investigadores na página oficial de recrutamento da Faculdade; não inclui concursos docentes ou não docentes. |
+| `ubi-docentes` | Universidade da Beira Interior | Concursos para pessoal docente em candidatura aberta; os concursos para investigadores não estão cobertos por esta fonte. |
 
-Not covered, and why:
-- **BSC:** its site is behind an anti-bot challenge, which Atalaya doesn't try to get past.
-- **EURAXESS:** blocks automated search. A data-feed request is drafted in `docs/euraxess-data-request.md`.
-- **Regional bulletins (BOJA, DOGC, BOCM…):** not yet; universities' own pages cover the same contract calls more directly.
+As fontes portuguesas estão numa fase de validação. Confirma sempre os requisitos e prazos no aviso original. A BEP permanece desligada enquanto não existir acesso automatizado autorizado e estável.
+
+## Outras fontes e âmbito
+
+A edição portuguesa ativa apenas as fontes nacionais portuguesas listadas acima e os concursos europeus ERC/MSCA. Os adaptadores de Espanha do projeto original (BOE, AEI, Ikerbasque, ICREA, CSIC, centros e universidades) permanecem no repositório, mas não são executados nem apresentados nesta edição. O filtro da base de dados do site também exclui registos históricos dessas fontes.
+
+Não ativado:
+- **BEP:** o parser experimental está desligado enquanto não existir acesso automatizado autorizado e estável.
+- **EURAXESS:** ainda não existe um método de recolha oficial, estável e validado; não contornamos bloqueios de pesquisa.
+- **Outras universidades e politécnicos:** serão adicionados com parsers e testes próprios.
 
 ## How it works
 

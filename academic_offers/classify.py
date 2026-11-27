@@ -17,7 +17,20 @@ PE, LS, SS, HU = "Physical Sciences & Engineering", "Life & Health Sciences", "S
 
 FIELD_RULES: list[tuple[str, str, str]] = [
     # (regex, field, subfield)
-    (r"did[áa]ctica|educaci[óo]n f[íi]sica|deport", SS, "Education"),
+    # Official FCT scientific-domain labels, kept ahead of broad keyword rules.
+    (r"ciências agrárias", LS, "Agriculture, Food & Veterinary"),
+    (r"ciências da engenharia e tecnologias", PE, "Engineering & Technology"),
+    (r"ciências exatas", PE, "Physical & Mathematical Sciences"),
+    (r"humanidades", HU, "Humanities"),
+    (r"ciências médicas e da saúde", LS, "Health & Medicine"),
+    (r"ciências naturais", LS, "Natural Sciences"),
+    (r"ciências sociais", SS, "Social Sciences"),
+    (r"ciências da vida|ciências biomédicas|ciências da saúde", LS, "Life & Health Sciences"),
+    (r"ciências jurídico|direito|law|jur[íi]dic", SS, "Law"),
+    (r"ciências do desporto|desporto|sport", SS, "Sports Sciences"),
+    (r"ciências empresariais|gestão|management", SS, "Economics & Business"),
+    (r"estudos musicais|musicologia|música", HU, "Music"),
+    (r"did[áa]ctica|educaci[óo]n f[íi]sica|deport|ensino|pedagogia", SS, "Education"),
     (r"computaci|inteligencia artificial|inform[áa]tic|lenguajes y sistemas|computer|software|data scien|telem[áa]tic|arquitectura y tecnolog[íi]a de computadores", PE, "Computer Science & AI"),
     (r"veterinari|producci[óo]n animal|sanidad animal|medicina y cirug[íi]a animal|anatom[íi]a.*comparadas|agr[íi]col|agronom|edafolog|forestal|tecnolog[íi]a de alimentos|nutrici[óo]n y bromatolog", LS, "Agriculture, Food & Veterinary"),
     (r"fisioterapia|anatom[íi]a|embriolog|otorrino|traumatolog|ortoped|dermatolog|urolog|enfermer|medicina|cirug[íi]a|cardiolog|cardiovascular|cardi|pediatr|psiquiatr|radiolog|farmacolog|farmacia|odontolog|estomatolog|obstetricia|oftalmolog|salud|cl[íi]nic|m[ée]dic|hematol|patolog|inmunolog|nursing", LS, "Health & Medicine"),
@@ -40,12 +53,13 @@ FIELD_RULES: list[tuple[str, str, str]] = [
 _COMPILED = [(re.compile(p, re.I), f, s) for p, f, s in FIELD_RULES]
 
 STAGE_RULES: list[tuple[str, str]] = [
-    (r"catedr[áa]tic|full professor|profesor/a de investigaci", "Senior faculty / research professor"),
-    (r"titular de universidad|permanente laboral|cient[íi]fico/a titular|investigador/a cient|permanent position|group leader|tenure", "Permanent faculty / researcher"),
+    (r"investigadores?\s+dl\s*57|investigador(?:a)?\s+de\s+n[ií]vel\s+(?:inicial|interm[eé]dio)|investigador(?:a)?\s+doutorado", "Researcher / DL 57"),
+    (r"catedr[áa]tic|full professor|profesor/a de investigaci|professor catedrático", "Senior faculty / research professor"),
+    (r"titular de universidad|permanente laboral|cient[íi]fico/a titular|investigador/a cient|permanent position|group leader|tenure|professor associado|professor auxiliar|investigador principal|investigador auxiliar", "Permanent faculty / researcher"),
     (r"ayudante doctor|ram[óo]n y cajal|tenure.track|erc (starting|consolidator)|consolidator grant|research fellows|icrea", "Tenure-track & independent fellowships"),
-    (r"postdoc|post-doc|posdoc|juan de la cierva|postdoctoral", "Postdoc"),
-    (r"predoc|phd|doctoral|fpu|fpi|doctorado|student research", "PhD / predoc"),
-    (r"t[ée]cnic|technician|manager|gesti[óo]n|ingeniero de|operations", "Technical & research support"),
+    (r"postdoc|post-doc|posdoc|juan de la cierva|postdoctoral|pós[- ]?doutor", "Postdoc"),
+    (r"predoc|phd|doctoral|fpu|fpi|doctorado|student research|doutorand|bolsa de doutoramento|doutoramento", "PhD / predoc"),
+    (r"t[ée]cnic|technician|manager|gesti[óo]n|ingeniero de|operations|técnico superior", "Technical & research support"),
 ]
 _STAGES = [(re.compile(p, re.I), s) for p, s in STAGE_RULES]
 

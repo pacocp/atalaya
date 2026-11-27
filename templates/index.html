@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="es">
+<html lang="pt-PT">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Atalaya · Academic Positions in Spain</title>
-<meta name="description" content="Open academic positions and research funding calls across Spanish universities and research centres, updated daily.">
+<title>Atalaia · Oportunidades académicas e científicas em Portugal</title>
+<meta name="description" content="Concursos para docentes, vagas de investigação e bolsas em Portugal, reunidos diariamente a partir de fontes oficiais.">
 <style>
   :root {
     --bg: #f7f6f2; --surface: #ffffff; --ink: #1d1d1b; --muted: #6b6a65; --line: #e4e2db;
@@ -75,38 +75,38 @@
 </head>
 <body>
 <header>
-  <h1>Atalaya <span style="font-weight:400;color:var(--muted)">· Academic Positions in Spain</span></h1>
-  <p class="lede">Open faculty posts, research jobs and funding calls from Spanish universities, research centres and funders, collected daily from official sources and grouped by area.</p>
+  <h1>Atalaia <span style="font-weight:400;color:var(--muted)">· Oportunidades académicas e científicas em Portugal</span></h1>
+  <p class="lede">Concursos para docentes, vagas de investigação e bolsas de financiamento, reunidos diariamente a partir de fontes oficiais portuguesas e concursos europeus.</p>
   <div class="stats" id="stats"></div>
-  <p style="margin:14px 0 0;font-size:14px"><a href="about.html">About &amp; sources</a> · by <a href="https://pacocp.es">Francisco Carrillo-Perez</a></p>
+  <p style="margin:14px 0 0;font-size:14px"><a href="about.html">Sobre o portal e as fontes</a> · projeto original por <a href="https://pacocp.es">Francisco Carrillo-Pérez</a></p>
 </header>
 
 <div class="layout">
-  <aside aria-label="Filters">
-    <div class="filter"><label for="q">Search</label><input id="q" type="search" placeholder="Área, institution, keyword…"></div>
-    <div class="filter"><fieldset><legend>Show</legend>
+  <aside aria-label="Filtros">
+    <div class="filter"><label for="q">Pesquisar</label><input id="q" type="search" placeholder="Área, instituição, palavra-chave…"></div>
+    <div class="filter"><fieldset><legend>Mostrar</legend>
       <div class="seg" id="kind">
-        <button data-v="" aria-pressed="true">All</button><button data-v="position" aria-pressed="false">Positions</button><button data-v="call" aria-pressed="false">Calls</button>
+        <button data-v="" aria-pressed="true">Todas</button><button data-v="position" aria-pressed="false">Vagas</button><button data-v="call" aria-pressed="false">Concursos</button>
       </div></fieldset></div>
-    <div class="filter"><label for="stage">Career stage</label><select id="stage"></select></div>
-    <div class="filter"><label for="subfield">Subfield</label><select id="subfield"></select></div>
-    <div class="filter"><label for="region">Region</label><select id="region"></select></div>
-    <div class="filter"><label for="inst">Institution</label><select id="inst"></select></div>
-    <div class="filter"><label class="check"><input type="checkbox" id="soon"> Closing within 14 days</label></div>
-    <div class="filter"><label class="check"><input type="checkbox" id="fresh"> New this week</label></div>
-    <button class="reset" id="reset">Clear filters</button>
+    <div class="filter"><label for="stage">Fase de carreira</label><select id="stage"></select></div>
+    <div class="filter"><label for="subfield">Subárea</label><select id="subfield"></select></div>
+    <div class="filter"><label for="region">Região</label><select id="region"></select></div>
+    <div class="filter"><label for="inst">Instituição</label><select id="inst"></select></div>
+    <div class="filter"><label class="check"><input type="checkbox" id="soon"> Terminam nos próximos 14 dias</label></div>
+    <div class="filter"><label class="check"><input type="checkbox" id="fresh"> Novas esta semana</label></div>
+    <button class="reset" id="reset">Limpar filtros</button>
   </aside>
 
   <main>
-    <div class="fields" id="fields" role="group" aria-label="Field"></div>
+    <div class="fields" id="fields" role="group" aria-label="Área científica"></div>
     <div id="results" aria-live="polite"></div>
   </main>
 </div>
 
 <footer>
-  <p>Updated {{ generated }}. Every listing links to the original notice — always check it there before applying. Deadlines marked “est.” are computed from the notice text (e.g. “20 días hábiles”), counting national and regional holidays but not local ones. Entries marked “IA” were read from a PDF annex by an AI model. <a href="about.html">About Atalaya, sources and data</a> · <a href="offers.json">JSON</a></p>
-  <p>Made by <a href="https://pacocp.es">Francisco Carrillo-Perez</a> as a non-commercial side project.</p>
-  <p>Sources:</p>
+  <p>Atualizado em {{ generated }}. Cada oportunidade liga ao aviso original; confirma sempre as condições junto da entidade responsável. Prazos identificados como estimados são calculados a partir do texto do aviso e podem não refletir feriados locais. Entradas extraídas de anexos PDF por IA podem conter erros. <a href="about.html">Sobre o portal, fontes e dados</a> · <a href="offers.json">Dados JSON</a></p>
+  <p>Adaptação portuguesa do projeto aberto <a href="https://github.com/pacocp/atalaya">Atalaya</a>.</p>
+  <p>Fontes:</p>
   <ul>{% for s in sources %}<li>{{ s }}</li>{% endfor %}</ul>
 </footer>
 
@@ -116,18 +116,23 @@ const OFFERS = JSON.parse(document.getElementById('data').textContent);
 const TODAY = "{{ today }}";
 const FIELD_ORDER = ["Physical Sciences & Engineering", "Life & Health Sciences", "Social Sciences", "Humanities", "Multidisciplinary / other"];
 const FIELD_COLOR = {"Physical Sciences & Engineering":"--pe","Life & Health Sciences":"--ls","Social Sciences":"--ss","Humanities":"--hu","Multidisciplinary / other":"--other"};
-const STAGE_ORDER = ["PhD / predoc","Postdoc","Tenure-track & independent fellowships","Permanent faculty / researcher","Senior faculty / research professor","Technical & research support","Funding call (various stages)","Other"];
+const STAGE_ORDER = ["PhD / predoc","Postdoc","Tenure-track & independent fellowships","Permanent faculty / researcher","Senior faculty / research professor","Researcher / DL 57","Technical & research support","Funding call (various stages)","Other"];
+const FIELD_LABEL = {"Physical Sciences & Engineering":"Ciências Físicas e Engenharia","Life & Health Sciences":"Ciências da Vida e da Saúde","Social Sciences":"Ciências Sociais","Humanities":"Humanidades","Multidisciplinary / other":"Multidisciplinar / outras"};
+const STAGE_LABEL = {"PhD / predoc":"Doutoramento / pré-doutoramento","Postdoc":"Pós-doutoramento","Tenure-track & independent fellowships":"Carreira independente e bolsas","Permanent faculty / researcher":"Docência / investigação permanente","Senior faculty / research professor":"Professor catedrático / investigador sénior","Researcher / DL 57":"Investigador (DL 57)","Technical & research support":"Técnicos e apoio à investigação","Funding call (various stages)":"Concurso de financiamento","Other":"Outros"};
+const fieldLabel = value => FIELD_LABEL[value] || value;
+const stageLabel = value => STAGE_LABEL[value] || value;
 const state = { field: "", kind: "", stage: "", subfield: "", region: "", inst: "", q: "", soon: false, fresh: false };
 
 const $ = id => document.getElementById(id);
 const days = iso => Math.round((new Date(iso) - new Date(TODAY)) / 864e5);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const fmt = iso => new Date(iso + "T00:00").toLocaleDateString("es-ES", {day:"numeric", month:"short", year:"numeric"});
+const fmt = iso => new Date(iso + "T00:00").toLocaleDateString("pt-PT", {day:"numeric", month:"short", year:"numeric"});
+const subfieldFor = o => o.subfield || "Geral";
 
-function fillSelect(el, label, values, order) {
+function fillSelect(el, label, values, order, display = value => value) {
   const vals = [...new Set(values.filter(Boolean))];
   vals.sort((a, b) => order ? (order.indexOf(a) - order.indexOf(b)) : a.localeCompare(b, "es"));
-  el.innerHTML = `<option value="">${label}</option>` + vals.map(v => `<option>${esc(v)}</option>`).join("");
+  el.innerHTML = `<option value="">${label}</option>` + vals.map(v => `<option value="${esc(v)}">${esc(display(v))}</option>`).join("");
 }
 
 function matches(o, ignoreField) {
@@ -140,7 +145,7 @@ function matches(o, ignoreField) {
   if (state.soon && !(o.deadline && days(o.deadline) <= 14)) return false;
   if (state.fresh && days(o.first_seen) < -7) return false;
   if (state.q) {
-    const hay = [o.title, o.area_raw, o.institution, o.field, o.subfield, o.stage, o.region, o.notes, o.position_type].join(" ").toLowerCase();
+    const hay = [o.title, o.area_raw, o.institution, o.field, o.subfield, o.stage, o.region, o.notes, o.position_type, o.extra && o.extra.fct_funding_type].join(" ").toLowerCase();
     if (!state.q.toLowerCase().split(/\s+/).every(w => hay.includes(w))) return false;
   }
   return true;
@@ -149,17 +154,17 @@ function matches(o, ignoreField) {
 function card(o) {
   const d = o.deadline ? days(o.deadline) : null;
   const dl = o.deadline
-    ? `<span class="dl ${d <= 7 ? "soon" : ""}">${d === 0 ? "Closes today" : d === 1 ? "Closes tomorrow" : "Closes " + fmt(o.deadline)}${o.deadline_estimated ? '<span class="est">est. from notice</span>' : ""}</span>`
-    : `<span class="dl none">No deadline listed</span>`;
-  const isNew = days(o.first_seen) >= -7 ? '<span class="tag new">New</span> ' : "";
-  const posts = o.n_posts > 1 ? ` · ${o.n_posts} posts` : "";
+    ? `<span class="dl ${d <= 7 ? "soon" : ""}">${d === 0 ? "Termina hoje" : d === 1 ? "Termina amanhã" : "Termina " + fmt(o.deadline)}${o.deadline_estimated ? '<span class="est">estimado a partir do aviso</span>' : ""}</span>`
+    : `<span class="dl none">Prazo não indicado</span>`;
+  const isNew = days(o.first_seen) >= -7 ? '<span class="tag new">Novo</span> ' : "";
+  const posts = o.n_posts > 1 ? ` · ${o.n_posts} vagas` : "";
   return `<article class="card" style="--c:var(${FIELD_COLOR[o.field] || "--other"})">
     <a class="t" href="${esc(o.url)}" target="_blank" rel="noopener">${esc(o.title)}</a>
     <div class="side">${dl}</div>
     <div class="meta">${isNew}<span>${esc(o.institution)}</span>${o.region ? `<span>${esc(o.region)}</span>` : ""}
-      ${o.area_raw && !o.title.includes(o.area_raw) ? `<span>${esc(o.area_raw)}</span>` : ""}<span>${esc(o.stage)}${posts}</span>
+      ${o.area_raw && !o.title.includes(o.area_raw) ? `<span>${esc(o.area_raw)}</span>` : ""}${o.extra && o.extra.fct_funding_type ? `<span>${esc(o.extra.fct_funding_type)}</span>` : ""}${o.extra && o.extra.ulisboa_document_url ? `<a href="${esc(o.extra.ulisboa_document_url)}" target="_blank" rel="noopener">Documento</a>` : ""}<span>${esc(stageLabel(o.stage))}${posts}</span>
       ${o.notes ? `<span>${esc(o.notes)}</span>` : ""}</div>
-    <div class="side"><span class="tag">${o.kind === "call" ? "Call" : "Position"}</span></div>
+    <div class="side"><span class="tag">${o.kind === "call" ? "Concurso" : "Vaga"}</span></div>
   </article>`;
 }
 
@@ -168,20 +173,20 @@ function render() {
   // field chips with counts that respect the other filters
   const base = OFFERS.filter(o => matches(o, true));
   const counts = Object.fromEntries(FIELD_ORDER.map(f => [f, base.filter(o => o.field === f).length]));
-  $("fields").innerHTML = `<button class="chip" data-f="" aria-pressed="${!state.field}">All fields <small>${base.length}</small></button>` +
+  $("fields").innerHTML = `<button class="chip" data-f="" aria-pressed="${!state.field}">Todas as áreas <small>${base.length}</small></button>` +
     FIELD_ORDER.filter(f => counts[f]).map(f => `<button class="chip" data-f="${esc(f)}" aria-pressed="${state.field === f}">
-      <span class="dot" style="background:var(${FIELD_COLOR[f]})"></span>${esc(f)} <small>${counts[f]}</small></button>`).join("");
+      <span class="dot" style="background:var(${FIELD_COLOR[f]})"></span>${esc(fieldLabel(f))} <small>${counts[f]}</small></button>`).join("");
 
-  if (!visible.length) { $("results").innerHTML = `<p class="empty">No offers match these filters.</p>`; return; }
+  if (!visible.length) { $("results").innerHTML = `<p class="empty">Não existem oportunidades que correspondam a estes filtros.</p>`; return; }
   const sortKey = o => (o.deadline || "9999") + o.title;
   let html = "";
   for (const f of FIELD_ORDER) {
     const inField = visible.filter(o => o.field === f);
     if (!inField.length) continue;
-    html += `<h2>${esc(f)} <small>${inField.length}</small></h2>`;
-    const subs = [...new Set(inField.map(o => o.subfield || "General"))].sort((a, b) => a.localeCompare(b));
+    html += `<h2>${esc(fieldLabel(f))} <small>${inField.length}</small></h2>`;
+    const subs = [...new Set(inField.map(subfieldFor))].sort((a, b) => a.localeCompare(b));
     for (const s of subs) {
-      const items = inField.filter(o => (o.subfield || "General") === s).sort((a, b) => sortKey(a) < sortKey(b) ? -1 : 1);
+      const items = inField.filter(o => subfieldFor(o) === s).sort((a, b) => sortKey(a) < sortKey(b) ? -1 : 1);
       if (subs.length > 1) html += `<h3>${esc(s)} · ${items.length}</h3>`;
       html += items.map(card).join("");
     }
@@ -193,13 +198,13 @@ function init() {
   const positions = OFFERS.filter(o => o.kind === "position");
   const posts = positions.reduce((n, o) => n + (o.n_posts || 1), 0);
   const soon = OFFERS.filter(o => o.deadline && days(o.deadline) <= 14).length;
-  $("stats").innerHTML = [[posts, "open posts"], [OFFERS.filter(o => o.kind === "call").length, "funding calls"],
-    [new Set(OFFERS.map(o => o.institution)).size, "institutions"], [soon, "closing within 14 days"]]
+  $("stats").innerHTML = [[posts, "vagas abertas"], [OFFERS.filter(o => o.kind === "call").length, "concursos"],
+    [new Set(OFFERS.map(o => o.institution)).size, "instituições"], [soon, "terminam em 14 dias"]]
     .map(([n, l]) => `<div class="stat"><b>${n}</b><span>${l}</span></div>`).join("");
-  fillSelect($("stage"), "All stages", OFFERS.map(o => o.stage), STAGE_ORDER);
-  fillSelect($("subfield"), "All subfields", OFFERS.map(o => o.subfield));
-  fillSelect($("region"), "All regions", OFFERS.map(o => o.region));
-  fillSelect($("inst"), "All institutions", OFFERS.map(o => o.institution));
+  fillSelect($("stage"), "Todas as fases", OFFERS.map(o => o.stage), STAGE_ORDER, stageLabel);
+  fillSelect($("subfield"), "Todas as subáreas", OFFERS.map(o => o.subfield));
+  fillSelect($("region"), "Todas as regiões", OFFERS.map(o => o.region));
+  fillSelect($("inst"), "Todas as instituições", OFFERS.map(o => o.institution));
 
   $("fields").addEventListener("click", e => { const b = e.target.closest(".chip"); if (b) { state.field = b.dataset.f; render(); } });
   $("kind").addEventListener("click", e => {

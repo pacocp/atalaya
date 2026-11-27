@@ -6,7 +6,8 @@ import re
 
 EN = "january february march april may june july august september october november december".split()
 ES = "enero febrero marzo abril mayo junio julio agosto septiembre octubre noviembre diciembre".split()
-MONTHS = {m: i for i, m in enumerate(EN, 1)} | {m: i for i, m in enumerate(ES, 1)} | {"setiembre": 9}
+PT = "janeiro fevereiro março abril maio junho julho agosto setembro outubro novembro dezembro".split()
+MONTHS = {m: i for i, m in enumerate(EN, 1)} | {m: i for i, m in enumerate(ES, 1)} | {m: i for i, m in enumerate(PT, 1)} | {"setiembre": 9}
 _M = "(" + "|".join(MONTHS) + ")"
 
 PATTERNS = [

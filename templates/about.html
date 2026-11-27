@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-PT">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About · Atalaya</title>
+<title>Sobre · Atalaia</title>
 <style>
   :root { --bg:#f7f6f2; --ink:#1d1d1b; --muted:#6b6a65; --line:#e4e2db; --accent:#b4451f; }
   @media (prefers-color-scheme: dark) { :root { --bg:#151513; --ink:#ecebe6; --muted:#a3a29b; --line:#33322e; --accent:#e07a50; } }
@@ -23,48 +23,35 @@
 </head>
 <body>
 <main>
-  <p><a href="./">← Back to the offers</a></p>
-  <h1>About Atalaya</h1>
-  <p class="muted">An <em>atalaya</em> is a watchtower: one lookout over academic posts and research funding across Spain.</p>
+  <p><a href="./">← Voltar às oportunidades</a></p>
+  <h1>Sobre a Atalaia</h1>
+  <p class="muted">Uma atalaia é um ponto de observação: aqui reunimos oportunidades académicas e científicas publicadas por entidades portuguesas.</p>
 
   <section class="author" aria-labelledby="who">
-    <h2 id="who">Who made it</h2>
-    <p>Atalaya is built and maintained by
-       <a href="https://pacocp.es">Francisco (Paco) Carrillo-Pérez</a>, a machine-learning researcher working on
-       AI for cancer research. Paco did his Ph.D. at the University of Granada and was a Fulbright Scholar and
-       postdoctoral researcher at Stanford University.</p>
-    <p>He built Atalaya as a personal, non-commercial side project: the information about academic jobs in Spain
-       is public, but it's spread across dozens of bulletins and websites. Atalaya gathers it in one place.</p>
-    <p class="links"><a href="https://pacocp.es">pacocp.es</a> · <a href="https://github.com/pacocp">GitHub</a> ·
-       <a href="https://scholar.google.com/citations?user=KqHbnTkAAAAJ">Google Scholar</a> ·
-       <a href="https://www.linkedin.com/in/franciscocp/">LinkedIn</a></p>
-    <p class="muted">Found a mistake or a missing source? <a href="{{ repo_url }}/issues">Open an issue</a>.</p>
+    <h2 id="who">Projeto original</h2>
+    <p>A Atalaya original foi criada por <a href="https://pacocp.es">Francisco (Paco) Carrillo-Pérez</a> como projeto pessoal e não comercial. Esta adaptação parte do código aberto do projeto original e acrescenta fontes portuguesas.</p>
+    <p class="links"><a href="https://pacocp.es">pacocp.es</a> · <a href="https://github.com/pacocp/atalaya">GitHub do projeto original</a> · <a href="https://github.com/Diogo-JSDias/atalaya">Código desta adaptação</a></p>
+    <p class="muted">Encontrou um erro ou uma fonte em falta? <a href="{{ repo_url }}/issues">Abra uma questão no GitHub</a>.</p>
   </section>
 
-  <h2>What it does</h2>
-  <p>Once a day, Atalaya reads official bulletins, funders and institutional job boards, extracts the open
-     positions and calls, groups them by field and career stage, and links each one back to the original notice.
-     It is non-commercial and has no accounts or tracking.</p>
+  <h2>O que faz</h2>
+  <p>O portal recolhe concursos docentes, oportunidades de investigação e bolsas a partir de boletins oficiais, fundações, universidades e centros de investigação. Normaliza os dados, agrupa as oportunidades por área e fase de carreira e liga cada entrada ao aviso original.</p>
 
-  <h2>Accuracy</h2>
-  <p>Always check the original notice before applying. Deadlines marked “est.” are calculated from wording such as
-     “veinte días hábiles” and account for national and regional holidays, but not local ones. Where a notice lists
-     its posts only in a PDF annex, an AI model reads the annex; those fields can contain mistakes.</p>
+  <h2>Precisão e prazos</h2>
+  <p>Confirme sempre o aviso original antes de apresentar uma candidatura. Só são apresentados prazos completos quando existe uma data explícita na fonte. Datas calculadas a partir de durações legais devem ser identificadas como estimativas e não substituem a interpretação do aviso ou da legislação aplicável.</p>
+  <p>Os campos extraídos automaticamente podem conter erros. Quando uma fonte não publica um prazo, entidade ou domínio científico de forma clara, o portal deve deixar esse campo em branco em vez de o adivinhar.</p>
 
-  <h2>Sources</h2>
+  <h2>Fontes e última recolha</h2>
   <table>
-    <tr><th>Source</th><th>Last run</th><th>Items</th></tr>
+    <tr><th>Fonte</th><th>Última execução</th><th>Entradas</th></tr>
     {% for s in status %}<tr><td>{{ s.name }}</td><td>{{ s.run_at }}</td><td>{{ s.n }}{% if s.n == 0 and not s.may_be_empty %} ⚠️{% endif %}</td></tr>{% endfor %}
   </table>
 
-  <h2>For site owners</h2>
-  <p>The crawler identifies itself as <code>AtalayaBot</code>, visits each page at most once a day, honours
-     <code>robots.txt</code> and <code>Crawl-delay</code>, and only reads public pages. If you'd like your institution
-     added, removed, or to provide a feed instead, please
-     <a href="{{ repo_url }}/issues">open an issue</a>.</p>
+  <h2>Para responsáveis por fontes</h2>
+  <p>O crawler identifica-se como <code>AtalayaBot</code>, respeita as regras publicadas em <code>robots.txt</code> e os intervalos entre pedidos, e só consulta páginas públicas. Se a sua instituição quiser sugerir uma fonte, pedir a sua remoção ou disponibilizar um feed oficial, <a href="{{ repo_url }}/issues">abra uma questão</a>.</p>
 
-  <h2>Data</h2>
-  <p>All current offers are available as <a href="offers.json">JSON</a>. Built {{ generated }}.</p>
+  <h2>Dados</h2>
+  <p>As oportunidades atuais estão disponíveis em formato <a href="offers.json">JSON</a>. Página gerada em {{ generated }}.</p>
 </main>
 </body>
 </html>

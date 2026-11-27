@@ -56,7 +56,10 @@ def scrape(db, today: dt.date, boe_days: int, only: set[str] | None) -> None:
 
 
 def build_site(db, today: dt.date, out: Path) -> int:
-    rows = store.current(db, today)
+    active_sources = {source.key for source in SOURCES}
+    # Old Spanish records remain in SQLite for history, but must not leak into
+    # the Portuguese edition after those adapters were removed from the registry.
+    rows = [row for row in store.current(db, today) if row.get("source") in active_sources]
     runs = store.last_runs(db)
     status = [{"name": s.name, "run_at": runs.get(s.key, ("never", 0))[0].replace("T", " ").replace("Z", " UTC"),
                "n": runs.get(s.key, ("", 0))[1], "may_be_empty": s.may_be_empty} for s in SOURCES]
